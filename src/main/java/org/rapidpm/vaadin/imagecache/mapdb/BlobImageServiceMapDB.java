@@ -27,7 +27,7 @@ public class BlobImageServiceMapDB implements HasLogger, BlobService {
     logger().info("containsKey = " + containsKey);
 
     if (! containsKey) {
-//      load data into system -> some slow remote system
+//      load data into system -> some filesystem remote system
       loadFile()
           .apply(blobID)
           .ifPresentOrElse(

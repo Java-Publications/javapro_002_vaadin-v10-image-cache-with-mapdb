@@ -13,7 +13,7 @@ import org.rapidpm.vaadin.imagecache.BlobService;
 /**
  *
  */
-public class BlobImageServiceCached implements HasLogger, BlobService {
+public class BlobImageServiceWeakRef implements HasLogger, BlobService {
 
   //TODO fill up the memory
   private static final Map<String, WeakReference<Result<byte[]>>> CACHE = new ConcurrentHashMap<>();

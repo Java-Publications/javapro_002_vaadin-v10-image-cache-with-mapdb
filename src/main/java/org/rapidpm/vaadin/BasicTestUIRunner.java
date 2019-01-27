@@ -16,7 +16,8 @@
 package org.rapidpm.vaadin;
 
 import org.apache.meecrowave.Meecrowave;
-import org.rapidpm.vaadin.imagecache.map.BlobImageService;
+import org.rapidpm.vaadin.imagecache.filesystem.BlobImageServiceFileSystem;
+import org.rapidpm.vaadin.imagecache.map.BlobImageServiceMap;
 import org.rapidpm.vaadin.imagecache.BlobService;
 
 public class BasicTestUIRunner {
@@ -24,11 +25,10 @@ public class BasicTestUIRunner {
   }
 
 
-  public static final BlobService BLOB_SERVICE = new BlobImageService();
-//  public static final BlobService BLOB_SERVICE = new BlobImageServiceCached();
+  public static final BlobService BLOB_SERVICE = new BlobImageServiceFileSystem();
+//  public static final BlobService BLOB_SERVICE = new BlobImageServiceMap();
+//  public static final BlobService BLOB_SERVICE = new BlobImageServiceWeakRef();
 //  public static final BlobService BLOB_SERVICE = new BlobImageServiceMapDB();
-
-
 
   public static void main(String[] args) {
 

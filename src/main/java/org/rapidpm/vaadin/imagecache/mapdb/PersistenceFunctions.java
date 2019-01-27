@@ -20,7 +20,7 @@ public interface PersistenceFunctions {
 
   class DatabasePair extends Pair<DB, DB> {
 
-    public DatabasePair(DB db , DB db2) {
+    DatabasePair(DB db , DB db2) {
       super(db , db2);
     }
 

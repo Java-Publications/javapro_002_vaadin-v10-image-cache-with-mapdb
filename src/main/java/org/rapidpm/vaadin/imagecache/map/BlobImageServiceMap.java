@@ -8,10 +8,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.rapidpm.frp.model.Result;
 import org.rapidpm.vaadin.imagecache.BlobService;
 
-/**
- *
- */
-public class BlobImageService implements BlobService {
+public class BlobImageServiceMap implements BlobService {
 
   private static final Map<String, Result<byte[]>> CACHE = new ConcurrentHashMap<>(); //TODO fill up the memory
 
