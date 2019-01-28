@@ -15,14 +15,18 @@
  */
 package org.rapidpm.vaadin;
 
+import static org.rapidpm.frp.model.Result.ofNullable;
+import static org.rapidpm.vaadin.BlobImagePushService.register;
 import static org.rapidpm.vaadin.imagecache.ImageFunctions.nextImageName;
 import static org.rapidpm.vaadin.imagecache.ImageFunctions.streamResource;
-import static org.rapidpm.vaadin.BlobImagePushService.register;
 
 import java.util.function.Function;
 
 import org.rapidpm.dependencies.core.logger.HasLogger;
+import org.rapidpm.frp.model.Result;
+import org.rapidpm.vaadin.imagecache.BlobService;
 import com.vaadin.flow.component.Composite;
+import com.vaadin.flow.component.DetachEvent;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.page.Push;
@@ -43,27 +47,29 @@ public class VaadinApp extends Composite<Div> implements HasLogger {
 
   private Function<String, AbstractStreamResource> createImageResource() {
     return (imageID) -> streamResource()
-        .apply(BasicTestUIRunner.BLOB_SERVICE)
+        .apply(BlobService.INSTANCE)
         .apply(imageID)
         .setCacheTime(0);
   }
 
   private Image image;
-  private Registration registration;
+  private Result<Registration> registration;
 
   public VaadinApp() {
-    Div content = getContent();
-    content.setSizeFull();
-
     image = createImageResource()
         .andThen(createImage()).apply(nextImageName().get());
 
-    registration = register(imgID -> image.getUI()
-                                          .ifPresent(ui -> ui.access(() -> {
-                                            logger().info("DashboardComponent - imgID = " + imgID);
-                                            image.setSrc(createImageResource().apply(imgID));
-                                          })));
+    registration = ofNullable(register(imgID -> image.getUI()
+                                      .ifPresent(ui -> ui.access(() -> {
+                                        logger().info("VaadinApp - imgID = " + imgID);
+                                        image.setSrc(createImageResource().apply(imgID));
+                                      }))));
+    getContent().add(image);
+  }
 
-    content.add(image);
+  @Override
+  protected void onDetach(DetachEvent detachEvent) {
+    super.onDetach(detachEvent);
+    registration.ifPresent(Registration::remove);
   }
 }

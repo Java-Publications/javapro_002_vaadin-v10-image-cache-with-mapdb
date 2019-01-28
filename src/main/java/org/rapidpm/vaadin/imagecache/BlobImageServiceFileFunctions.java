@@ -13,6 +13,4 @@ public interface BlobImageServiceFileFunctions {
   static CheckedFunction<String, byte[]> loadFile() {
     return (blobID) -> readAllBytes(new File(STORAGE_PREFIX + blobID).toPath());
   }
-
-
 }
